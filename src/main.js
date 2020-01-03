@@ -15,7 +15,7 @@ Vue.config.productionTip = false
 
 setTimeout(() => {
   localStorage.removeItem('bearerToken')
-}, 16000);
+}, 8000);
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {

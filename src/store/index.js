@@ -7,7 +7,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     userName: 'User',
-    billRecipents: []
+    billRecipents: [],
+    billTitle: '',
+    billDescription: '',
+    errMsg: ''
   },
   getters: {
     userName(state) {
@@ -15,6 +18,12 @@ export default new Vuex.Store({
     },
     billRecipents(state) {
       return state.billRecipents
+    },
+    billTitleName(state) {
+      return state.billTitle
+    },
+    billDescriptionName(state) {
+      return state.billDescription
     }
   },
   mutations: {
@@ -23,6 +32,15 @@ export default new Vuex.Store({
     },
     getBillList: (state, payload) => {
       state.billRecipents = payload
+    },
+    getBillTitle: (state, payload) => {
+      state.billTitle = payload
+    },
+    getBillDescription: (state, payload) => {
+      state.billDescription = payload
+    },
+    getErrorMsg: (state, payload) => {
+      state.errMsg = payload
     }
   },
   actions: {
@@ -47,10 +65,14 @@ export default new Vuex.Store({
         },
         config})
         .then((res) => {
-          console.log(res.data.message[0].title)
+          // console.log(res.data.message[0].title)
           context.commit('getBillList', res.data.message[0].bill_recipients)
+          context.commit('getBillTitle', res.data.message[0].title)
+          context.commit('getBillDescription', res.data.message[0].description)
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          context.commit('getErrorMsg', err)
+        })
     }
   }
 })
